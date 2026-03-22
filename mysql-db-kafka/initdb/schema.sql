@@ -1,0 +1,20 @@
+-- Create the tables only if they do not exist
+CREATE TABLE IF NOT EXISTS customer (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS product (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    price DECIMAL(10,2) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS `order` (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    customer_id BIGINT NOT NULL,
+    order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (customer_id) REFERENCES customer(id)
+);
+
