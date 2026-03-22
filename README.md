@@ -15,7 +15,7 @@ This application consists of:
 
 | Component | Technology |
 |-----------|------------|
-| API | Spring Boot 3.3.3 (Java 23) |
+| API | Spring Boot 3.3.3 |
 | Client | Node.js 20 |
 | Database | MySQL 8.4 |
 | Message Broker | Kafka 7.5.0 |
@@ -25,7 +25,7 @@ This application consists of:
 
 ## Quick Start
 
-### Option 1: Run Everything with Docker Compose (Recommended)
+### Option 1: Run Everything with Docker Compose 
 
 Brings up MySQL, Kafka, backend, and client with one command.
 
@@ -60,12 +60,12 @@ docker-compose down
 - Java 23 (JDK)
 - Node.js 20+
 - MySQL 8.4 running locally
-- Kafka + Zookeeper (optional — app degrades gracefully)
+- Kafka + Zookeeper
 
 #### Setup MySQL
 
 ```bash
-# Via Docker (easiest)
+# Via Docker
 docker run --name mysql-ecommerce \
   -e MYSQL_ROOT_PASSWORD=rootpassword \
   -e MYSQL_DATABASE=ecommerce \
