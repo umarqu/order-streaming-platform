@@ -1,6 +1,6 @@
 # E-Commerce Order Management System
 
-A microservices-based e-commerce platform demonstrating Kubernetes-ready architecture with order processing, event streaming, and containerized services.
+A microservices-based e-commerce platform which is Kubernetes-ready architecture with order processing, event streaming and containerized services.
 
 ## Project Overview
 
