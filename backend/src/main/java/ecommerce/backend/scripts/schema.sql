@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS `order` (
     product_id BIGINT NOT NULL,
     quantity INT NOT NULL DEFAULT 1,
     order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status VARCHAR(50) NOT NULL DEFAULT 'PENDING',
     FOREIGN KEY (customer_id) REFERENCES customer(id),
     FOREIGN KEY (product_id) REFERENCES product(id)
 );

@@ -26,4 +26,8 @@ public class Order {
 
     private Integer quantity;
     private LocalDateTime orderDate = LocalDateTime.now();
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private OrderStatus status = OrderStatus.PENDING;
 }

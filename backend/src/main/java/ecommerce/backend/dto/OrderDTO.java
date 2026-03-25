@@ -1,5 +1,6 @@
 package ecommerce.backend.dto;
 
+import ecommerce.backend.model.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,5 +16,6 @@ public class OrderDTO {
     private Long productId;
     private Integer quantity;
     private LocalDateTime orderDate;
+    private OrderStatus status;
 
 }

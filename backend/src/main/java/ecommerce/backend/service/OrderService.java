@@ -3,8 +3,10 @@ package ecommerce.backend.service;
 import ecommerce.backend.dto.OrderDTO;
 import ecommerce.backend.exceptions.CustomerNotFoundException;
 import ecommerce.backend.exceptions.ProductNotFoundException;
+import ecommerce.backend.exceptions.ResourceNotFoundException;
 import ecommerce.backend.model.Customer;
 import ecommerce.backend.model.Order;
+import ecommerce.backend.model.OrderStatus;
 import ecommerce.backend.model.Product;
 import ecommerce.backend.repository.CustomerRepository;
 import ecommerce.backend.repository.OrderRepository;
@@ -54,6 +56,7 @@ public class OrderService {
         order.setProduct(product);
         order.setQuantity(dto.getQuantity());
         order.setOrderDate(LocalDateTime.now());
+        order.setStatus(OrderStatus.PENDING);
 
         Order saved = orderRepository.save(order);
         OrderDTO response = convertToDTO(saved);
@@ -70,11 +73,17 @@ public class OrderService {
                 .collect(Collectors.toList());
     }
 
+    public OrderDTO getOrderById(Long id) {
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found with id: " + id));
+        return convertToDTO(order);
+    }
+
     private void publishOrderEvent(OrderDTO order) {
         String event = String.format(
-                "{\"event\":\"order.created\",\"orderId\":%d,\"customerId\":%d,\"productId\":%d,\"quantity\":%d,\"orderDate\":\"%s\"}",
+                "{\"event\":\"order.created\",\"orderId\":%d,\"customerId\":%d,\"productId\":%d,\"quantity\":%d,\"orderDate\":\"%s\",\"status\":\"%s\"}",
                 order.getId(), order.getCustomerId(), order.getProductId(),
-                order.getQuantity(), order.getOrderDate());
+                order.getQuantity(), order.getOrderDate(), order.getStatus());
 
         kafkaTemplate.send(ordersTopic, String.valueOf(order.getId()), event);
         log.info("Published order.created event for orderId={}", order.getId());
@@ -87,6 +96,15 @@ public class OrderService {
         dto.setProductId(order.getProduct().getId());
         dto.setQuantity(order.getQuantity());
         dto.setOrderDate(order.getOrderDate());
+        dto.setStatus(order.getStatus());
         return dto;
+    }
+
+    public OrderDTO updateOrderStatus(Long orderId, OrderStatus newStatus) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found with id: " + orderId));
+        order.setStatus(newStatus);
+        Order updated = orderRepository.save(order);
+        return convertToDTO(updated);
     }
 }

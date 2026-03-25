@@ -1,6 +1,7 @@
 package ecommerce.backend.controller;
 
 import ecommerce.backend.dto.OrderDTO;
+import ecommerce.backend.model.OrderStatus;
 import ecommerce.backend.service.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,5 +31,16 @@ public class OrderController {
         log.info("Received order request: customerId={}, productId={}, quantity={}",
                 dto.getCustomerId(), dto.getProductId(), dto.getQuantity());
         return orderService.createOrder(dto);
+    }
+
+    @GetMapping("/{id}")
+    public OrderDTO getOrder(@PathVariable Long id) {
+        return orderService.getOrderById(id);
+    }
+
+    @PutMapping("/{id}/status")
+    public OrderDTO updateOrderStatus(@PathVariable Long id, @RequestParam OrderStatus status) {
+        log.info("Updating order {} status to {}", id, status);
+        return orderService.updateOrderStatus(id, status);
     }
 }
